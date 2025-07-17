@@ -24,7 +24,7 @@ def get_prompt_text(day):
     weekday_map = {"sat": 5, "sun": 6, "wed": 2}
     weekday_num = weekday_map.get(day.lower(), 5)
     date_str = get_next_weekday(weekday_num)
-    return f"{date_str} {day.capitalize()} women's training attendance\n\nPlease click below to respond."
+    return f"📝 *{day.capitalize()} Training Attendance – {date_str}*\n\nPlease click below to respond."
 
 def build_keyboard():
     return InlineKeyboardMarkup([
