@@ -118,13 +118,19 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             )
 
     # Update group message
-    await context.bot.edit_message_text(
-        chat_id=session["chat_id"],
-        message_id=session["message_id"],
-        text=format_response_text(session),
-        reply_markup=build_keyboard(),
-        parse_mode="Markdown"
-    )
+    from telegram.error import BadRequest
+
+    try:
+        await context.bot.edit_message_text(
+            chat_id=session["chat_id"],
+            message_id=session["message_id"],
+            text=format_response_text(session),
+            reply_markup=build_keyboard(),
+            parse_mode="Markdown"
+        )
+    except BadRequest as e:
+        if "Message is not modified" not in str(e):
+            raise
 
 async def handle_dm_reply(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.message.from_user
@@ -140,13 +146,19 @@ async def handle_dm_reply(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 await update.message.reply_text("✅ Got it! Your response has been recorded.")
 
             # Update group message
-            await context.bot.edit_message_text(
-                chat_id=session["chat_id"],
-                message_id=session["message_id"],
-                text=format_response_text(session),
-                reply_markup=build_keyboard(),
-                parse_mode="Markdown"
-            )
+            from telegram.error import BadRequest
+
+            try:
+                await context.bot.edit_message_text(
+                    chat_id=session["chat_id"],
+                    message_id=session["message_id"],
+                    text=format_response_text(session),
+                    reply_markup=build_keyboard(),
+                    parse_mode="Markdown"
+                )
+            except BadRequest as e:
+                if "Message is not modified" not in str(e):
+                    raise
             break
 
 if __name__ == "__main__":
